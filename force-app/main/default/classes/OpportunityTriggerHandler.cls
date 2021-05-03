@@ -15,19 +15,28 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
   public Web_Order__c copyWebOrder(Opportunity op) {
     Web_Order__c wo = new Web_Order__c();
 
-    Map<String, Schema.FieldSet> Fs1 = Schema.SObjectType.Opportunity.fieldSets.getMap();
-    Map<String, Schema.FieldSet> Fs2 = Schema.SObjectType.Web_Order__c.fieldSets.getMap();
-    system.debug(Fs1);
-    system.debug(Fs2);
+    List<String> opportunityFields = new List<String>();
+    List<String> WebOrderFields = new List<String>();
 
-    wo.Close_Date__c = date.today();
-    wo.Name = 'test wo';
-    wo.Stage__c = 'Closed Won';
+    Map<String, Schema.FieldSet> OpportunityFs = Schema.SObjectType.Opportunity.fieldSets.getMap();
+
+    for (Schema.FieldSet fs : OpportunityFs.values()) {
+      for (Schema.FieldSetMember fsm : fs.getFields()) {
+        opportunityFields.add(fsm.getFieldPath());
+      }
+    }
+    Map<String, Schema.FieldSet> WebOrdercFs = Schema.SObjectType.Web_Order__c.fieldSets.getMap();
+
+    for (Schema.FieldSet fs : WebOrdercFs) {
+      for (Schema.FieldSetMember fsm : fs.getFields()) {
+        opportunityFields.add(fsm.get('getSObjectField'));
+      }
+    }
+
+    for (String field : opportunityFields) {
+      wo.WebOrderFields[opportunityFields.indexOf(field)] = op.field;
+    }
 
     return wo;
-    // for (Schema.FieldSet fs : FsMap.values()) {
-    //   for (SObject var : fs) {
-    //   }
-    // }
   }
 }
