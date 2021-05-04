@@ -2,28 +2,37 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
   public void bulkBefore() {
     if (Trigger.isInsert) {
       List<Web_Order__c> orders = new List<Web_Order__c>();
-      List<JunctionOpportunityWebOrder__c> junctions = new List<JunctionOpportunityWebOrder__c>();
 
-      for (sobject op : Trigger.new) {
-        orders.add(createWebOrder((Opportunity) op));
-      }
       for (Integer i = 0; i < Trigger.new.size(); i++) {
-        JunctionOpportunityWebOrder__c jun = new JunctionOpportunityWebOrder__c();
-        jun.Opportunity__c = Trigger.new[i].Id;
-        jun.Web_Order__c = orders[i].Id;
-        junctions.add(jun);
+        orders.add(createWebOrder((Opportunity) Trigger.new[i]));
+        JunctionOpportunityWebOrderHelper.newOpportunities.add(
+          (Opportunity) Trigger.new[i]
+        );
+        JunctionOpportunityWebOrderHelper.newWebOrders.add(orders[i]);
       }
-      insert junctions;
       insert orders;
     } else if (Trigger.isUpdate) {
       updateRelatedWebOrders((List<Opportunity>) Trigger.new);
-    }
-    else if (Trigger.isDelete) {
-      deleteRelatedWebOrders((List<Opportunity>) Trigger.new);
+    } else if (Trigger.isDelete) {
+      deleteRelatedWebOrders((List<Opportunity>) Trigger.old);
     }
   }
 
   public void bulkAfter() {
+    if (Trigger.isInsert) {
+      List<JunctionOpportunityWebOrder__c> junctions = new List<JunctionOpportunityWebOrder__c>();
+
+      for (Integer i = 0; i < Trigger.new.size(); i++) {
+        JunctionOpportunityWebOrder__c jun = new JunctionOpportunityWebOrder__c();
+        jun.Opportunity__c = JunctionOpportunityWebOrderHelper.newOpportunities[
+            i
+          ]
+          .Id;
+        jun.Web_Order__c = JunctionOpportunityWebOrderHelper.newWebOrders[i].Id;
+        junctions.add(jun);
+      }
+      insert junctions;
+    }
   }
 
   public void deleteRelatedWebOrders(List<Opportunity> opl) {
@@ -32,6 +41,10 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
       FROM JunctionOpportunityWebOrder__c
       WHERE Opportunity__c IN :opl
     ];
+
+    if (junctions == null) {
+      return;
+    }
 
     List<Id> IdWebOrders = new List<Id>();
 
