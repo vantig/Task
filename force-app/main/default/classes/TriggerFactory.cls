@@ -12,10 +12,14 @@ public with sharing class TriggerFactory {
   }
 
   private static void execute(ITrigger handler) {
-    if (Trigger.isBefore) {
-      handler.bulkBefore();
-    } else {
-      handler.bulkAfter();
+    if (Trigger.isBefore && Trigger.isInsert) {
+      handler.onBeforeInsert();
+    } else if (Trigger.isBefore && Trigger.isUpdate) {
+      handler.onBeforeUpdate();
+    } else if (Trigger.isBefore && Trigger.isDelete) {
+      handler.onBeforeDelete();
+    } else if (Trigger.isAfter && Trigger.isInsert) {
+      handler.onAfterInsert();
     }
   }
 

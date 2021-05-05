@@ -1,4 +1,4 @@
-public with sharing class OpportunityTriggerHandler implements ITrigger { 
+public with sharing class WebOrderTriggerHandler {
   public void onBeforeInsert() {
     List<Web_Order__c> orders = new List<Web_Order__c>();
 
@@ -15,7 +15,7 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
     List<JunctionOpportunityWebOrder__c> junctions = JunctionOpportunityWebOrderHelper.getRelatedJunctions(
       (List<Opportunity>) Trigger.new
     );
-    List<Web_Order__c> webOrders =WebOrderHelper.getRelatedWebOrders(
+    List<Web_Order__c> webOrders = WebOrderHelper.getRelatedWebOrders(
       (List<Opportunity>) Trigger.new
     );
     Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>();
@@ -44,7 +44,6 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
   public void onAfterInsert() {
     insert JunctionOpportunityWebOrderHelper.createNewJunctions();
   }
-
 
   private void copyOpportunity(Opportunity op, Web_Order__c wo) {
     List<String> opportunityFields = OpportunityHelper.getOpportunityFieldsfromFS();

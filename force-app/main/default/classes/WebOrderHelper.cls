@@ -45,4 +45,18 @@ public with sharing class WebOrderHelper {
 
     return wo;
   }
+  public static List<Web_Order__c> getRelatedWebOrders(List<Opportunity> opl) {
+    List<JunctionOpportunityWebOrder__c> junctions = JunctionOpportunityWebOrderHelper.getRelatedJunctions(
+      opl
+    );
+
+    if (junctions == null) {
+      return new List<Web_Order__c>();
+    }
+
+    List<Web_Order__c> webOrders = WebOrderHelper.getRelatedWebOrders(
+      junctions
+    );
+    return webOrders;
+  }
 }

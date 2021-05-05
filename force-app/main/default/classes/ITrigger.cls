@@ -1,4 +1,6 @@
 public interface ITrigger {
-  void bulkBefore();
-  void bulkAfter();
+  void onBeforeInsert();
+  void onBeforeUpdate();
+  void onBeforeDelete();
+  void onAfterInsert();
 }
