@@ -36,5 +36,4 @@ public with sharing class JunctionOpportunityWebOrderHelper {
     newOpportunities = new List<Opportunity>();
   }
 
-	
 }

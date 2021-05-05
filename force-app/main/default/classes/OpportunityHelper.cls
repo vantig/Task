@@ -11,7 +11,7 @@ public with sharing class OpportunityHelper {
 
     return opportunityFields;
   }
-  public static Web_Order__c createOpportunity(Web_Order__c wo) {
+  public static Opportunity createOpportunity(Web_Order__c wo) {
     Opportunity op = new Opportunity();
 
     List<String> opportunityFields = OpportunityHelper.getOpportunityFieldsfromFS();
@@ -33,7 +33,7 @@ public with sharing class OpportunityHelper {
       IdOpportunites.add(jun.Web_Order__c);
     }
 
-    List<String>OpportunitesFields = getOpportunityFieldsfromFS();
+    List<String> OpportunitesFields = getOpportunityFieldsfromFS();
 
     String query = 'SELECT ';
     for (String field : OpportunitesFields) {
@@ -44,7 +44,9 @@ public with sharing class OpportunityHelper {
 
     return Database.Query(query);
   }
-  public static List<Opportunity> getRelatedOpportunites(List<Web_Order__c> wol) {
+  public static List<Opportunity> getRelatedOpportunites(
+    List<Web_Order__c> wol
+  ) {
     List<JunctionOpportunityWebOrder__c> junctions = JunctionOpportunityWebOrderHelper.getRelatedJunctions(
       wol
     );
@@ -53,7 +55,7 @@ public with sharing class OpportunityHelper {
       return new List<Opportunity>();
     }
 
-    List<Opportunity> opportunites = OpportunityHelper.getRelatedWebOrders(
+    List<Opportunity> opportunites = OpportunityHelper.getRelatedOpportunites(
       junctions
     );
     return opportunites;

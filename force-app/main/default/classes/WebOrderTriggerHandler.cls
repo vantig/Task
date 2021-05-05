@@ -14,12 +14,11 @@ public with sharing class WebOrderTriggerHandler {
     insert opportunites;
   }
 
-
   public void onBeforeUpdate() {
     List<JunctionOpportunityWebOrder__c> junctions = JunctionOpportunityWebOrderHelper.getRelatedJunctions(
       (List<Web_Order__c>) Trigger.new
     );
-    List<Web_Order__c> opportunites = OpportunityHelper.getRelatedOpportunites(
+    List<Opportunity> opportunites = OpportunityHelper.getRelatedOpportunites(
       (List<Web_Order__c>) Trigger.new
     );
     Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>();
@@ -30,13 +29,12 @@ public with sharing class WebOrderTriggerHandler {
       opportunityMap.put(op.Id, op);
     }
 
-    for (Web_Order__c wo :  (List<Web_Order__c>) Trigger.new) {
+    for (Web_Order__c wo : (List<Web_Order__c>) Trigger.new) {
       webOrderMap.put(wo.Id, wo);
     }
 
     for (JunctionOpportunityWebOrder__c jun : junctions) {
       copyWebOrder(
-       
         webOrderMap.get(jun.Web_Order__c),
         opportunityMap.get(jun.Opportunity__c)
       );
@@ -44,16 +42,16 @@ public with sharing class WebOrderTriggerHandler {
     update opportunites;
   }
 
-
-
   public void onBeforeDelete() {
-    delete WebOrderHelper.getRelatedWebOrders((List<Opportunity>) Trigger.old);
+    delete OpportunityHelper.getRelatedOpportunites(
+      (List<Web_Order__c>) Trigger.old
+    );
   }
   public void onAfterInsert() {
     insert JunctionOpportunityWebOrderHelper.createNewJunctions();
   }
 
-  private void  copyWebOrder( Web_Order__c wo,Opportunity op) {
+  private void copyWebOrder(Web_Order__c wo, Opportunity op) {
     List<String> opportunityFields = OpportunityHelper.getOpportunityFieldsfromFS();
 
     List<String> webOrderFields = WebOrderHelper.getWebOrderFieldsfromFS();
