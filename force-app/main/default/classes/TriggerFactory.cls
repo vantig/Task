@@ -27,7 +27,9 @@ public with sharing class TriggerFactory {
     if (soType == Opportunity.sObjectType) {
       return new OpportunityTriggerHandler();
     }
-
+    if (soType == Web_Order__c.sObjectType) {
+      return new WebOrderTriggerHandler();
+    }
     return null;
   }
 }

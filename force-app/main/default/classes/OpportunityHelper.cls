@@ -30,7 +30,7 @@ public with sharing class OpportunityHelper {
     List<Id> IdOpportunites = new List<Id>();
 
     for (JunctionOpportunityWebOrder__c jun : junctions) {
-      IdOpportunites.add(jun.Web_Order__c);
+      IdOpportunites.add(jun.Opportunity__c);
     }
 
     List<String> OpportunitesFields = getOpportunityFieldsfromFS();
