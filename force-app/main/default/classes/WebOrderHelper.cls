@@ -10,12 +10,10 @@ public with sharing class WebOrderHelper {
 
     List<String> webOrderFields = getWebOrderFieldsfromFS();
 
-    String query = 'SELECT ';
-    for (String field : webOrderFields) {
-      query += field + ', ';
-    }
-
-    query += 'Id FROM Web_Order__c WHERE Id IN:IdWebOrders';
+    String query =
+      'SELECT ' +
+      String.join(webOrderFields, ', ') +
+      'Id FROM Web_Order__c WHERE Id IN:IdWebOrders';
 
     return Database.Query(query);
   }

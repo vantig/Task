@@ -35,12 +35,10 @@ public with sharing class OpportunityHelper {
 
     List<String> OpportunitesFields = getOpportunityFieldsfromFS();
 
-    String query = 'SELECT ';
-    for (String field : OpportunitesFields) {
-      query += field + ', ';
-    }
-
-    query += 'Id FROM Opportunity WHERE Id IN:IdOpportunites';
+    String query =
+      'SELECT ' +
+      String.join(OpportunitesFields, ', ') +
+      'Id FROM Opportunity WHERE Id IN:IdOpportunites';
 
     return Database.Query(query);
   }
