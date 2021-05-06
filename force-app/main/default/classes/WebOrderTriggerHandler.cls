@@ -64,14 +64,24 @@ public with sharing class WebOrderTriggerHandler implements ITrigger {
       JunctionOpportunityWebOrderHelper.WEBORDER_TRIGGER
     ) {
       insert JunctionOpportunityWebOrderHelper.createNewJunctions();
+      JunctionOpportunityWebOrderHelper.currentTrigger = null;
     }
-    JunctionOpportunityWebOrderHelper.currentTrigger = null;
   }
   public void onAfterUpdate() {
-    JunctionOpportunityWebOrderHelper.currentTrigger = null;
+    if (
+      JunctionOpportunityWebOrderHelper.currentTrigger ==
+      JunctionOpportunityWebOrderHelper.WEBORDER_TRIGGER
+    ) {
+      JunctionOpportunityWebOrderHelper.currentTrigger = null;
+    }
   }
   public void onAfterDelete() {
-    JunctionOpportunityWebOrderHelper.currentTrigger = null;
+    if (
+      JunctionOpportunityWebOrderHelper.currentTrigger ==
+      JunctionOpportunityWebOrderHelper.WEBORDER_TRIGGER
+    ) {
+      JunctionOpportunityWebOrderHelper.currentTrigger = null;
+    }
   }
   private void copyWebOrder(Web_Order__c wo, Opportunity op) {
     List<String> opportunityFields = OpportunityHelper.getOpportunityFieldsFromFS();

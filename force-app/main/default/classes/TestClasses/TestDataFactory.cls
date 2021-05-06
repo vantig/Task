@@ -1,6 +1,6 @@
-@isTest
-public class TestDataFactory {
-  public static void createWebOrdersTestRecords(Integer numWebOrders) {
+public with sharing class TestDataFactory {
+  @TestVisible
+  static void createWebOrdersTestRecords(Integer numWebOrders) {
     List<Web_Order__c> webOrders = new List<Web_Order__c>();
     for (Integer i = 0; i < numWebOrders; i++) {
       Web_Order__c wo = new Web_Order__c();
@@ -11,7 +11,8 @@ public class TestDataFactory {
     }
     insert webOrders;
   }
-  public static void createOpportunitiesTestRecords(Integer numOpportunities) {
+  @TestVisible
+  static void createOpportunitiesTestRecords(Integer numOpportunities) {
     List<Opportunity> opportunities = new List<Opportunity>();
     for (Integer i = 0; i < numOpportunities; i++) {
       Opportunity opp = new Opportunity();
