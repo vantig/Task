@@ -7,5 +7,5 @@ trigger OpportunityTrigger on Opportunity(
   before insert,
   before update
 ) {
-  TriggerFactory.createHandler(Opportunity.sObjectType);
+  TriggerFactory.createHandler(Opportunity.SObjectType);
 }

@@ -1,5 +1,5 @@
 public with sharing class TriggerFactory {
-  public static void createHandler(Schema.sObjectType soType) {
+  public static void createHandler(Schema.SObjectType soType) {
     ITrigger handler = getHandler(soType);
 
     if (handler == null) {
@@ -23,11 +23,11 @@ public with sharing class TriggerFactory {
     }
   }
 
-  private static ITrigger getHandler(Schema.sObjectType soType) {
-    if (soType == Opportunity.sObjectType) {
+  private static ITrigger getHandler(Schema.SObjectType soType) {
+    if (soType == Opportunity.SObjectType) {
       return new OpportunityTriggerHandler();
     }
-    if (soType == Web_Order__c.sObjectType) {
+    if (soType == Web_Order__c.SObjectType) {
       return new WebOrderTriggerHandler();
     }
     return null;

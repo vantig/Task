@@ -62,11 +62,11 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
   }
 
   private void copyOpportunity(Opportunity op, Web_Order__c wo) {
-    List<String> opportunityFields = OpportunityHelper.getOpportunityFieldsfromFS();
+    List<String> opportunityFields = OpportunityHelper.getOpportunityFieldsFromFS();
 
-    List<String> webOrderFields = WebOrderHelper.getWebOrderFieldsfromFS();
+    List<String> webOrderFields = WebOrderHelper.getWebOrderFieldsFromFS();
 
-    for (integer i = 0; i < opportunityFields.size(); i++) {
+    for (Integer i = 0; i < opportunityFields.size(); i++) {
       wo.put(webOrderFields[i], op.get(opportunityFields[i]));
     }
   }

@@ -5,19 +5,21 @@ public with sharing class WebOrderHelper {
     List<Id> IdWebOrders = new List<Id>();
 
     for (JunctionOpportunityWebOrder__c jun : junctions) {
-      idWebOrders.add(jun.Web_Order__c);
+      IdWebOrders.add(jun.Web_Order__c);
     }
 
-    List<String> webOrderFields = getWebOrderFieldsfromFS();
+    List<String> webOrderFields = getWebOrderFieldsFromFS();
 
-    String query =
-      'SELECT ' +
-      String.join(webOrderFields, ', ') +
-      'Id FROM Web_Order__c WHERE Id IN:IdWebOrders';
+    String query = 'SELECT ';
+    for (String field : webOrderFields) {
+      query += field + ', ';
+    }
 
-    return Database.Query(query);
+    query += 'Id FROM Web_Order__c WHERE Id IN:IdWebOrders';
+
+    return Database.query(query);
   }
-  public static List<String> getWebOrderFieldsfromFS() {
+  public static List<String> getWebOrderFieldsFromFS() {
     List<String> webOrderFields = new List<String>();
 
     Map<String, Schema.FieldSet> WebOrderFs = Schema.SObjectType.Web_Order__c.fieldSets.getMap();
@@ -33,11 +35,11 @@ public with sharing class WebOrderHelper {
   public static Web_Order__c createWebOrder(Opportunity op) {
     Web_Order__c wo = new Web_Order__c();
 
-    List<String> opportunityFields = OpportunityHelper.getOpportunityFieldsfromFS();
+    List<String> opportunityFields = OpportunityHelper.getOpportunityFieldsFromFS();
 
-    List<String> webOrderFields = WebOrderHelper.getWebOrderFieldsfromFS();
+    List<String> webOrderFields = WebOrderHelper.getWebOrderFieldsFromFS();
 
-    for (integer i = 0; i < opportunityFields.size(); i++) {
+    for (Integer i = 0; i < opportunityFields.size(); i++) {
       wo.put(webOrderFields[i], op.get(opportunityFields[i]));
     }
 

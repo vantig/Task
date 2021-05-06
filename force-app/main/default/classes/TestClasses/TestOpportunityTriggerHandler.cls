@@ -1,11 +1,12 @@
-@isTest
+@IsTest
 public class TestOpportunityTriggerHandler {
-  @isTest
-  public static void CreateOpportunity() {
-    Opportunity Opp = new Opportunity();
-    Opp.Name = 'test' + date.today();
-    Opp.CloseDate = date.today();
-    Opp.StageName = 'Prospecting';
-    insert Opp;
-  }
+    @IsTest
+    public static void CreateOpportunity() {
+        Opportunity Opp = new Opportunity();
+        Opp.Name = 'test' + Date.today();
+        Opp.CloseDate = Date.today();
+        Opp.StageName = 'Prospecting';
+        insert Opp;
+       // System.assertEquals();
+    }
 }
