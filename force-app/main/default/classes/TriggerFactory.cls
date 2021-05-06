@@ -7,8 +7,9 @@ public with sharing class TriggerFactory {
         'No Trigger Handler registered for Object Type: ' + soType
       );
     }
-
-    execute(handler);
+    if (JunctionOpportunityWebOrderHelper.flag) {
+      execute(handler);
+    }
   }
 
   private static void execute(ITrigger handler) {

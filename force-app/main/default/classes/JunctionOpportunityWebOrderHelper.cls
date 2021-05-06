@@ -1,9 +1,9 @@
 public with sharing class JunctionOpportunityWebOrderHelper {
   public static List<Web_Order__c> newWebOrders;
   public static List<Opportunity> newOpportunities;
-  public static String currentTrigger=null;
-  public static final String OPPORTUNITY_TRIGGER='opportunityTrigger';
-  public static final String WEBORDER_TRIGGER='webOrderTrigger';
+  public static Boolean flag = true;
+  // public static final String OPPORTUNITY_TRIGGER='opportunityTrigger';
+  // public static final String WEBORDER_TRIGGER='webOrderTrigger';
   public static List<JunctionOpportunityWebOrder__c> getRelatedJunctions(
     List<Opportunity> opl
   ) {
