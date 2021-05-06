@@ -20,6 +20,10 @@ public with sharing class TriggerFactory {
       handler.onBeforeDelete();
     } else if (Trigger.isAfter && Trigger.isInsert) {
       handler.onAfterInsert();
+    } else if (Trigger.isAfter && Trigger.isUpdate) {
+      handler.onAfterUpdate();
+    } else if (Trigger.isAfter && Trigger.isDelete) {
+      handler.onAfterDelete();
     }
   }
 

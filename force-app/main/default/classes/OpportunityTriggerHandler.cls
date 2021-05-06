@@ -59,8 +59,15 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
     ) {
       insert JunctionOpportunityWebOrderHelper.createNewJunctions();
     }
-  }
+    JunctionOpportunityWebOrderHelper.currentTrigger=null;
 
+  }
+  public void onAfterUpdate() {
+    JunctionOpportunityWebOrderHelper.currentTrigger = null;
+  }
+  public void onAfterDelete() {
+    JunctionOpportunityWebOrderHelper.currentTrigger = null;
+  }
   private void copyOpportunity(Opportunity op, Web_Order__c wo) {
     List<String> opportunityFields = OpportunityHelper.getOpportunityFieldsFromFS();
 

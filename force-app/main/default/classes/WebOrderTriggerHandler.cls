@@ -11,7 +11,9 @@ public with sharing class WebOrderTriggerHandler implements ITrigger {
         JunctionOpportunityWebOrderHelper.newWebOrders.add(
           (Web_Order__c) Trigger.new[i]
         );
-        JunctionOpportunityWebOrderHelper.newOpportunities.add(opportunities[i]);
+        JunctionOpportunityWebOrderHelper.newOpportunities.add(
+          opportunities[i]
+        );
       }
       insert opportunities;
     }
@@ -63,8 +65,14 @@ public with sharing class WebOrderTriggerHandler implements ITrigger {
     ) {
       insert JunctionOpportunityWebOrderHelper.createNewJunctions();
     }
+    JunctionOpportunityWebOrderHelper.currentTrigger = null;
   }
-
+  public void onAfterUpdate() {
+    JunctionOpportunityWebOrderHelper.currentTrigger = null;
+  }
+  public void onAfterDelete() {
+    JunctionOpportunityWebOrderHelper.currentTrigger = null;
+  }
   private void copyWebOrder(Web_Order__c wo, Opportunity op) {
     List<String> opportunityFields = OpportunityHelper.getOpportunityFieldsFromFS();
 

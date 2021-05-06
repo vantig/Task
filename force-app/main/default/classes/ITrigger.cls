@@ -3,4 +3,6 @@ public interface ITrigger {
   void onBeforeUpdate();
   void onBeforeDelete();
   void onAfterInsert();
+  void onAfterUpdate();
+  void onAfterDelete();
 }
