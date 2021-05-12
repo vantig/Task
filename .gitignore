@@ -9,7 +9,6 @@
 node_modules
 .idea/
 IlluminatedCloud/
-config/
 
 # Salesforce cache
 .vscode/
