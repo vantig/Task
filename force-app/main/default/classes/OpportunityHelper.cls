@@ -35,12 +35,8 @@ public with sharing class OpportunityHelper {
 
         List<String> OpportunitiesFields = getOpportunityFieldsFromFS();
 
-        String query = 'SELECT ';
-        for (String field : OpportunitiesFields) {
-            query += field + ', ';
-        }
+        String query = 'SELECT ' + String.join(OpportunitiesFields, ',') + ', Id FROM Opportunity WHERE Id IN:IdOpportunities';
 
-        query += 'Id FROM Opportunity WHERE Id IN:IdOpportunities';
 
         return Database.query(query);
     }

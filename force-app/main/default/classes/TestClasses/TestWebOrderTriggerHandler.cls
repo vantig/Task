@@ -1,6 +1,6 @@
 @IsTest
 private class TestWebOrderTriggerHandler {
-  @testSetup
+  @TestSetup
   static void setup() {
     TestDataFactory.createOpportunitiesTestRecords(1);
     TestDataFactory.createWebOrdersTestRecords(1);
@@ -8,14 +8,14 @@ private class TestWebOrderTriggerHandler {
   // @IsTest
   // static void testCreateOpportunity() {
   //   Integer countOfOpportunities = [SELECT Id FROM Opportunity].size();
-  //   System.assertEquals(2, countOfOpportunities, 'Insert Opportunities Faled');
+  //   System.assertEquals(2, countOfOpportunities, 'Insert Opportunities Failed');
   // }
   @IsTest
   static void testCreateWebOrdersWithRelated() {
     Integer countOfOpportunities = [SELECT Id FROM Opportunity].size();
     Integer countOfWebOrders = [SELECT Id FROM Web_Order__c].size();
-    System.assertEquals(2, countOfOpportunities, 'Insert  Opportunities Faled');
-    System.assertEquals(2, countOfWebOrders, 'Insert  WebOrders Faled');
+    System.assertEquals(2, countOfOpportunities, 'Insert  Opportunities Failed');
+    System.assertEquals(2, countOfWebOrders, 'Insert  WebOrders Failed');
   }
   @IsTest
   static void testUpdateWebOrderWithRelated() {
@@ -32,8 +32,8 @@ private class TestWebOrderTriggerHandler {
       FROM Web_Order__c
       WHERE Name = 'updated'
     ].size();
-    System.assertEquals(1, countOfOpportunities, 'Update  Opportunities Faled');
-    System.assertEquals(1, countOfWebOrders, 'Update  WebOrders Faled');
+    System.assertEquals(1, countOfOpportunities, 'Update  Opportunities Failed');
+    System.assertEquals(1, countOfWebOrders, 'Update  WebOrders Failed');
   }
   @IsTest
   static void testDeleteWebOrderWithRelated() {
@@ -41,7 +41,7 @@ private class TestWebOrderTriggerHandler {
     delete webOrders[0];
     Integer countOfOpportunities = [SELECT Id FROM Opportunity].size();
     Integer countOfWebOrders = [SELECT Id FROM Web_Order__c].size();
-    System.assertEquals(1, countOfOpportunities, 'Delete  Opportunities Faled');
-    System.assertEquals(1, countOfWebOrders, 'Delete  WebOrders Faled');
+    System.assertEquals(1, countOfOpportunities, 'Delete  Opportunities Failed');
+    System.assertEquals(1, countOfWebOrders, 'Delete  WebOrders Failed');
   }
 }

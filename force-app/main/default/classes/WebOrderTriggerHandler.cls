@@ -25,17 +25,9 @@ public with sharing class WebOrderTriggerHandler implements ITrigger {
     List<Opportunity> opportunities = OpportunityHelper.getRelatedOpportunities(
       (List<Web_Order__c>) Trigger.new
     );
-    Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>();
+    Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>(opportunities);
 
-    Map<Id, Web_Order__c> webOrderMap = new Map<Id, Web_Order__c>();
-
-    for (Opportunity op : opportunities) {
-      opportunityMap.put(op.Id, op);
-    }
-
-    for (Web_Order__c wo : (List<Web_Order__c>) Trigger.new) {
-      webOrderMap.put(wo.Id, wo);
-    }
+    Map<Id, Web_Order__c> webOrderMap = new Map<Id, Web_Order__c>( (List<Web_Order__c>) Trigger.new);
 
     for (JunctionOpportunityWebOrder__c jun : junctions) {
       copyWebOrder(
