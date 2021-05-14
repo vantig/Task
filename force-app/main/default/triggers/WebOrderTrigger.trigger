@@ -7,5 +7,5 @@ trigger WebOrderTrigger on Web_Order__c(
   before insert,
   before update
 ) {
-  TriggerFactory.createHandler(Web_Order__c.sObjectType);
+  TriggerFactory.createHandler(Web_Order__c.SObjectType);
 }

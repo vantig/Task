@@ -16,6 +16,7 @@ public with sharing class JunctionOpportunityWebOrderHelper {
   public static List<JunctionOpportunityWebOrder__c> getRelatedJunctions(
     List<Web_Order__c> wol
   ) {
+    
     return [
       SELECT Opportunity__c, Web_Order__c
       FROM JunctionOpportunityWebOrder__c
