@@ -1,20 +1,8 @@
 public with sharing class OpportunityTriggerHandler implements ITrigger {
     public void onBeforeInsert() {
-        JunctionOpportunityWebOrderHelper.flag = false;
 
-        List<Web_Order__c> orders = new List<Web_Order__c>();
-
-        for (Integer i = 0; i < Trigger.new.size(); i++) {
-            orders.add(WebOrderHelper.createWebOrder((Opportunity) Trigger.new[i]));
-            JunctionOpportunityWebOrderHelper.newOpportunities.add(
-                    (Opportunity) Trigger.new[i]
-            );
-            JunctionOpportunityWebOrderHelper.newWebOrders.add(orders[i]);
-        }
-        insert orders;
-        JunctionOpportunityWebOrderHelper.flag = true;
     }
-    
+
     public void onBeforeUpdate() {
         JunctionOpportunityWebOrderHelper.flag = false;
 
@@ -24,7 +12,7 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
         List<Web_Order__c> webOrders = WebOrderHelper.getRelatedWebOrders(
                 (List<Opportunity>) Trigger.new
         );
-        Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>((List<Opportunity>)Trigger.new);
+        Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>((List<Opportunity>) Trigger.new);
 
         Map<Id, Web_Order__c> webOrderMap = new Map<Id, Web_Order__c>(webOrders);
 
@@ -42,10 +30,28 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
 
         delete WebOrderHelper.getRelatedWebOrders((List<Opportunity>) Trigger.old);
         JunctionOpportunityWebOrderHelper.flag = true;
+
+
     }
     public void onAfterInsert() {
+
+
         JunctionOpportunityWebOrderHelper.flag = false;
 
+
+        System.debug(Trigger.newMap.values());
+
+        List<Opportunity>opportunities = Trigger.newMap.values();
+        List<Web_Order__c> orders = new List<Web_Order__c>();
+
+        for (Integer i = 0; i < opportunities.size(); i++) {
+            orders.add(WebOrderHelper.createWebOrder((Opportunity) opportunities[i]));
+            JunctionOpportunityWebOrderHelper.newOpportunities.add(
+                    (Opportunity) opportunities[i]
+            );
+            JunctionOpportunityWebOrderHelper.newWebOrders.add(orders[i]);
+        }
+        insert orders;
         insert JunctionOpportunityWebOrderHelper.createNewJunctions();
         JunctionOpportunityWebOrderHelper.flag = true;
     }

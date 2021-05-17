@@ -12,33 +12,44 @@ global with sharing class OpportunityManager {
     }
     @HttpPut
     global static void upsertOpportunity(String json) {
+
         JSONtoOpportunities result = JSONtoOpportunities.parse(json);
-        insert JSONtoOpportunitiesHelper.newAccounts;
-        List<Opportunity>opportunitiesUpdate;
-        List<Opportunity>opportunitiesInsert;
-        List<String>newSids = new List<String>();
-        for (Opportunity opp : result.opportunities) {
-            newSids.add(opp.x_sid__c);
-        }
-        Map<String, Opportunity> oldSids = new Map<String, Opportunity>();
-        for (Opportunity opp : [SELECT x_sid__c FROM Opportunity WHERE x_sid__c IN :newSids]) {
-            oldSids.put(opp.x_sid__c, opp);
-        }
-        for (Opportunity opp : result.opportunities) {
-            if (opp.AccountId == null) {
-                opp.AccountId = JSONtoOpportunitiesHelper.newAccounts.remove(0).Id;
-            }
-            if (oldSids.containsKey(opp.x_sid__c)) {
-                opp.Id = oldSids.get(opp.x_sid__c).Id;
-                opportunitiesUpdate.add(opp);
-            } else {
-                opportunitiesInsert.add(opp);
-            }
+
+        /*   List<Opportunity>opportunitiesUpdate=new List<Opportunity>();
+           List<Opportunity>opportunitiesInsert=new List<Opportunity>();
+           List<String>newSids = new List<String>();
+           for (Opportunity opp : result.opportunities) {
+               newSids.add(opp.x_sid__c);
+           }
+           Map<String, Opportunity> oldSids = new Map<String, Opportunity>();
+           for (Opportunity opp : [SELECT x_sid__c FROM Opportunity WHERE x_sid__c IN :newSids]) {
+               oldSids.put(opp.x_sid__c, opp);
+           }*/
+
+
+        Database.upsert(result.opportunities, false) ;
+
+        List<Opportunity>insertedOpportunitiesWithRelatedAccount= [SELECT x_sid__c FROM Opportunity WHERE x_sid__c IN :JSONtoOpportunitiesHelper.namesOfRelatedAccounts.keySet()];
+
+        List<Account>accounts=new List<Account>();
+
+        AccountHelper accHelper=new AccountHelper(JSONtoOpportunitiesHelper.namesOfRelatedAccounts.values());
+
+        for (Integer i=0;i<insertedOpportunitiesWithRelatedAccount.size();++i){
+
+            accounts.add(accHelper.getAccount(JSONtoOpportunitiesHelper.namesOfRelatedAccounts.get(insertedOpportunitiesWithRelatedAccount[i].x_sid__c)));
 
         }
-        insert opportunitiesInsert;
-        update opportunitiesUpdate;
 
+        Database.upsert(accounts, false) ;
+
+        for (Integer i=0;i<insertedOpportunitiesWithRelatedAccount.size();++i){
+
+            insertedOpportunitiesWithRelatedAccount[i].AccountId=accounts[i].Id;
+
+        }
+
+        Database.update(insertedOpportunitiesWithRelatedAccount, false) ;
 
     }
     @HttpDelete

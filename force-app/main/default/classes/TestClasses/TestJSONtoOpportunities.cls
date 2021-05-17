@@ -50,7 +50,7 @@ public class TestJSONtoOpportunities {
         System.assert(objJSONtoOpportunities.opportunities == null);
 
         json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
-        Opportunity   objOpportunities =  JSONtoOpportunities.getOpportunity(System.JSON.createParser(json));
+        Opportunity objOpportunities = JSONtoOpportunities.getOpportunity(System.JSON.createParser(json));
         System.assert(objOpportunities != null);
         System.assert(objOpportunities.StageName == null);
         System.assert(objOpportunities.Amount == null);
@@ -58,5 +58,52 @@ public class TestJSONtoOpportunities {
         System.assert(objOpportunities.CloseDate == null);
         System.assert(objOpportunities.Type == null);
         System.assert(objOpportunities.x_sid__c == null);
+    }
+    @IsTest
+    static void testPutCallout() {
+        RestRequest request = new RestRequest();
+        request.requestURI =
+                'https://cunning-badger-n3c04l-dev-ed.lightning.force.com//services/apexrest/Opportunity/';
+
+        request.httpMethod = 'PUT';
+        request.addHeader('Content-Type', 'application/json');
+        request.requestBody = Blob.valueOf('{ ' +
+                '   \"opportunities\":[ ' +
+                '      { ' +
+                '         \"accountName\":\"Test Account Name 1\",' +
+                '         \"opportunityName\":\"order 1\",' +
+                '         \"stage\":\"Prospecting\",' +
+                '         \"amount\":1094.56,' +
+                '         \"probability\":5,' +
+                '         \"closeDate\":\"2019-11-12\",' +
+                '         \"type\":\"New Business\",' +
+                '         \"_sid\":\"1\"' +
+                '      },' +
+                '      { ' +
+                '         \"accountName\":\"Test Account Name 1\",' +
+                '         \"opportunityName\":\"order 2\",' +
+                '         \"stage\":\"Prospecting\",' +
+                '         \"amount\":2000.00,' +
+                '         \"probability\":10,' +
+                '         \"closeDate\":\"2019-11-12\",' +
+                '         \"type\":\"New Business\",' +
+                '         \"_sid\":\"2\"' +
+                '      },' +
+                '      { ' +
+                '         \"accountName\":\"Test Account Name 2\",' +
+                '         \"opportunityName\":\"order 3\",' +
+                '         \"stage\":\"Prospecting\",' +
+                '         \"amount\":123.00,' +
+                '         \"probability\":2,' +
+                '         \"type\":\"New Business\",' +
+                '         \"_sid\":\"3\"' +
+                '      }' +
+                '   ]' +
+                '}');
+        RestContext.request = request;
+        System.debug(RestContext.request.requestBody.toString());
+        OpportunityManager.upsertOpportunity(RestContext.request.requestBody.toString());
+        System.debug([SELECT Id FROM Opportunity WHERE x_sid__c!=NULL]);
+        System.assert(2== [SELECT Id FROM Opportunity WHERE x_sid__c!=NULL].size());
     }
 }

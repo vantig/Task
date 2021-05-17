@@ -27,12 +27,14 @@ public class JSONtoOpportunities {
 
     public static Opportunity getOpportunity(JSONParser parser) {
         Opportunity opp = new Opportunity();
+        String sid ;
+        String accountName;
         while (parser.nextToken() != System.JSONToken.END_OBJECT) {
             if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
                 String text = parser.getText();
                 if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
                     if (text == 'accountName') {
-                        opp.AccountId = JSONtoOpportunitiesHelper.getAccount(parser.getText()).Id;
+                        accountName=parser.getText();
                     } else if (text == 'opportunityName') {
                         opp.Name = parser.getText();
                     } else if (text == 'stage') {
@@ -42,18 +44,22 @@ public class JSONtoOpportunities {
                     } else if (text == 'probability') {
                         opp.Probability = parser.getIntegerValue();
                     } else if (text == 'closeDate') {
-                        Datetime dT= (Datetime) JSON.deserialize(parser.getText(), Datetime.class);
-                        opp.CloseDate =  Date.newInstance(dT.year(), dT.month(), dT.day());
+                        Datetime dT = (Datetime) JSON.deserialize(parser.getText(), Datetime.class);
+                        opp.CloseDate = Date.newInstance(dT.year(), dT.month(), dT.day());
                     } else if (text == 'type') {
                         opp.Type = parser.getText();
                     } else if (text == '_sid') {
                         opp.x_sid__c = parser.getText();
+                        sid=opp.x_sid__c;
                     } else {
                         System.debug(LoggingLevel.WARN, 'Opportunities consuming unrecognized property: ' + text);
                         consumeObject(parser);
                     }
                 }
             }
+        }
+        if (accountName.length()>0) {
+            JSONtoOpportunitiesHelper.namesOfRelatedAccounts.put(sid,accountName);
         }
         return opp;
     }
@@ -83,7 +89,9 @@ public class JSONtoOpportunities {
         List<Opportunity> res = new List<Opportunity>();
         if (p.getCurrentToken() == null) p.nextToken();
         while (p.nextToken() != System.JSONToken.END_ARRAY) {
-            res.add(getOpportunity(p));
+            Opportunity opp = getOpportunity(p);
+            System.debug('get opp ' + opp);
+            res.add(opp);
         }
         return res;
     }
