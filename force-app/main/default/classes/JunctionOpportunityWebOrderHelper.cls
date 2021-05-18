@@ -26,7 +26,7 @@ public with sharing class JunctionOpportunityWebOrderHelper {
   public static List<JunctionOpportunityWebOrder__c> createNewJunctions() {
     List<JunctionOpportunityWebOrder__c> junctions = new List<JunctionOpportunityWebOrder__c>();
 
-    for (Integer i = 0; i < Trigger.new.size(); i++) {
+    for (Integer i = 0; i < newOpportunities.size(); i++) {
       JunctionOpportunityWebOrder__c jun = new JunctionOpportunityWebOrder__c();
       jun.Opportunity__c = JunctionOpportunityWebOrderHelper.newOpportunities[i]
         .Id;

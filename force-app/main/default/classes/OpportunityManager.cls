@@ -11,54 +11,66 @@ global with sharing class OpportunityManager {
 
     }
     @HttpPut
-    global static void upsertOpportunity(String json) {
-
-        JSONtoOpportunities result = JSONtoOpportunities.parse(json);
+    global static String  upsertOpportunity() {
+        RestRequest req = RestContext.request;
+        Blob body = req.requestBody;
+        String requestString = body.toString();
+        JSONtoOpportunities result = JSONtoOpportunities.parse(requestString);
 
         /*   List<Opportunity>opportunitiesUpdate=new List<Opportunity>();
            List<Opportunity>opportunitiesInsert=new List<Opportunity>();
            List<String>newSids = new List<String>();
            for (Opportunity opp : result.opportunities) {
-               newSids.add(opp.x_sid__c);
+               newSids.add(opp.External_Id__c);
            }
+
            Map<String, Opportunity> oldSids = new Map<String, Opportunity>();
-           for (Opportunity opp : [SELECT x_sid__c FROM Opportunity WHERE x_sid__c IN :newSids]) {
-               oldSids.put(opp.x_sid__c, opp);
+           for (Opportunity opp : [SELECT External_Id__c FROM Opportunity WHERE External_Id__c IN :newSids]) {
+               oldSids.put(opp.External_Id__c, opp);
            }*/
 
 
-        Database.upsert(result.opportunities, false) ;
+        //jsonResponse = '{ "firstName": "Test", "lastName": "Case 2", "email": "testuser2@acorp.com" }';
 
-        List<Opportunity>insertedOpportunitiesWithRelatedAccount= [SELECT x_sid__c FROM Opportunity WHERE x_sid__c IN :JSONtoOpportunitiesHelper.namesOfRelatedAccounts.keySet()];
+       // String jsonResponse = JSON.serialize(Database.upsert(result.opportunities, Opportunity.External_Id__c.getDescribe().getSobjectField(), false)) ;
 
-        List<Account>accounts=new List<Account>();
+       // String jsonResponse= JSON.serialize(Database.upsert(result.opportunities, Opportunity.External_Id__c.getDescribe().getSobjectField(), false));
+upsert result.opportunities  Opportunity.External_Id__c;
+        List<Opportunity>insertedOpportunitiesWithRelatedAccount = [SELECT External_Id__c FROM Opportunity WHERE External_Id__c IN :JSONtoOpportunitiesHelper.namesOfRelatedAccounts.keySet()];
 
-        AccountHelper accHelper=new AccountHelper(JSONtoOpportunitiesHelper.namesOfRelatedAccounts.values());
+        System.debug(insertedOpportunitiesWithRelatedAccount + 'insertedOpportunitiesWithRelatedAccount');
 
-        for (Integer i=0;i<insertedOpportunitiesWithRelatedAccount.size();++i){
 
-            accounts.add(accHelper.getAccount(JSONtoOpportunitiesHelper.namesOfRelatedAccounts.get(insertedOpportunitiesWithRelatedAccount[i].x_sid__c)));
+        AccountHelper accHelper = new AccountHelper(new List<String>(new Set<String>(JSONtoOpportunitiesHelper.namesOfRelatedAccounts.values())));
 
-        }
+        accHelper.reQueryByNames();
 
-        Database.upsert(accounts, false) ;
+        for (Opportunity opp : insertedOpportunitiesWithRelatedAccount) {
 
-        for (Integer i=0;i<insertedOpportunitiesWithRelatedAccount.size();++i){
-
-            insertedOpportunitiesWithRelatedAccount[i].AccountId=accounts[i].Id;
+            opp.AccountId = accHelper.getAccount(JSONtoOpportunitiesHelper.namesOfRelatedAccounts.get(opp.External_Id__c)).Id;
 
         }
 
         Database.update(insertedOpportunitiesWithRelatedAccount, false) ;
 
+
+//        RestResponse response = new RestResponse();
+//        response.statusCode = 200;
+//        System.debug(jsonResponse + ' jsonResponse' + '\n');
+//        response.responseBody = Blob.valueOf(jsonResponse);
+//
+//        response.addHeader('Content-Type', 'application/json');
+//        RestContext.response = response;
+
+        return '';
     }
     @HttpDelete
     global static void deleteOpportunity() {
         RestRequest request = RestContext.request;
-        String caseId = request.requestURI.substring(
+        String oppId = request.requestURI.substring(
                 request.requestURI.lastIndexOf('/') + 1);
-        Case thisCase = [SELECT Id FROM Case WHERE Id = :caseId];
-        delete thisCase;
+        Opportunity opp = [SELECT External_Id__c FROM Opportunity WHERE External_Id__c = :oppId];
+        delete opp;
     }
 
 }

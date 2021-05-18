@@ -8,11 +8,15 @@ public with sharing class TriggerFactory {
       );
     }
     if (JunctionOpportunityWebOrderHelper.flag) {
+      System.debug('trigger factory '+soType);
+      System.debug(Trigger.operationType+'\n');
       execute(handler);
+
     }
   }
 
   private static void execute(ITrigger handler) {
+
     if (Trigger.isBefore && Trigger.isInsert) {
       handler.onBeforeInsert();
     } else if (Trigger.isBefore && Trigger.isUpdate) {

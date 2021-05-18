@@ -1,6 +1,5 @@
 public with sharing class OpportunityTriggerHandler implements ITrigger {
     public void onBeforeInsert() {
-
     }
 
     public void onBeforeUpdate() {
@@ -22,7 +21,10 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
                     webOrderMap.get(jun.Web_Order__c)
             );
         }
-        update webOrders;
+
+            update webOrders;
+
+
         JunctionOpportunityWebOrderHelper.flag = true;
     }
     public void onBeforeDelete() {
@@ -39,27 +41,40 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
         JunctionOpportunityWebOrderHelper.flag = false;
 
 
-        System.debug(Trigger.newMap.values());
+       // System.debug(Trigger.newMap.values()+'onAfterInsert');
 
-        List<Opportunity>opportunities = Trigger.newMap.values();
+        List<Opportunity>opportunities = Trigger.new;
+
         List<Web_Order__c> orders = new List<Web_Order__c>();
 
         for (Integer i = 0; i < opportunities.size(); i++) {
-            orders.add(WebOrderHelper.createWebOrder((Opportunity) opportunities[i]));
+            orders.add(WebOrderHelper.createWebOrder( opportunities[i]));
+
             JunctionOpportunityWebOrderHelper.newOpportunities.add(
-                    (Opportunity) opportunities[i]
+                   opportunities[i]
             );
             JunctionOpportunityWebOrderHelper.newWebOrders.add(orders[i]);
         }
+
         insert orders;
         insert JunctionOpportunityWebOrderHelper.createNewJunctions();
+        System.debug(' opportunities');
+        for (Opportunity opp:opportunities){
+            System.debug(opp.External_Id__c+'External_Id__c');
+            System.debug(opp.Id+'Id');
+        }
+
+        System.debug(orders+' orders');
+        System.debug(JunctionOpportunityWebOrderHelper.createNewJunctions()+' junctions');
+        JunctionOpportunityWebOrderHelper.newOpportunities.clear();
+        JunctionOpportunityWebOrderHelper.newWebOrders.clear();
         JunctionOpportunityWebOrderHelper.flag = true;
     }
     public void onAfterUpdate() {
-        JunctionOpportunityWebOrderHelper.flag = true;
+
     }
     public void onAfterDelete() {
-        JunctionOpportunityWebOrderHelper.flag = true;
+
     }
     private void copyOpportunity(Opportunity op, Web_Order__c wo) {
         List<String> opportunityFields = OpportunityHelper.getOpportunityFieldsFromFS();

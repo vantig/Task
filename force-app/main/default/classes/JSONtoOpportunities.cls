@@ -49,8 +49,8 @@ public class JSONtoOpportunities {
                     } else if (text == 'type') {
                         opp.Type = parser.getText();
                     } else if (text == '_sid') {
-                        opp.x_sid__c = parser.getText();
-                        sid=opp.x_sid__c;
+                        opp.External_Id__c = parser.getText();
+                        sid=opp.External_Id__c;
                     } else {
                         System.debug(LoggingLevel.WARN, 'Opportunities consuming unrecognized property: ' + text);
                         consumeObject(parser);
@@ -58,7 +58,7 @@ public class JSONtoOpportunities {
                 }
             }
         }
-        if (accountName.length()>0) {
+        if (accountName!=null&&accountName.length()>0) {
             JSONtoOpportunitiesHelper.namesOfRelatedAccounts.put(sid,accountName);
         }
         return opp;
@@ -87,10 +87,11 @@ public class JSONtoOpportunities {
 
     private static List<Opportunity> arrayOfOpportunities(System.JSONParser p) {
         List<Opportunity> res = new List<Opportunity>();
-        if (p.getCurrentToken() == null) p.nextToken();
+        if (p.getCurrentToken() == null){
+            p.nextToken();
+        }
         while (p.nextToken() != System.JSONToken.END_ARRAY) {
             Opportunity opp = getOpportunity(p);
-            System.debug('get opp ' + opp);
             res.add(opp);
         }
         return res;
