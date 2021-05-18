@@ -33,17 +33,7 @@ private class TestOpportunityManager {
                 '         \"closeDate\":\"2019-11-12\",' +
                 '         \"type\":\"New Business\",' +
                 '         \"_sid\":\"2\"' +
-                '      },' +
-                '      { ' +
-                '         \"accountName\":\"Test Account Name 2\",' +
-                '         \"opportunityName\":\"order 3\",' +
-                '         \"stage\":\"Prospecting\",' +
-                '         \"amount\":123.00,' +
-                '         \"probability\":2,' +
-                '         \"type\":\"New Business\",' +
-                '         \"_sid\":\"3\"' +
-                '      }' +
-                '   ]' +
+                '      } ]' +
                 '}');
         RestContext.request = request;
 
