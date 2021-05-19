@@ -5,11 +5,6 @@ private class TestWebOrderTriggerHandler {
     TestDataFactory.createOpportunitiesTestRecords(1);
     TestDataFactory.createWebOrdersTestRecords(1);
   }
-  // @IsTest
-  // static void testCreateOpportunity() {
-  //   Integer countOfOpportunities = [SELECT Id FROM Opportunity].size();
-  //   System.assertEquals(2, countOfOpportunities, 'Insert Opportunities Failed');
-  // }
   @IsTest
   static void testCreateWebOrdersWithRelated() {
     Integer countOfOpportunities = [SELECT Id FROM Opportunity].size();

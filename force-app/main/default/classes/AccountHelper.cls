@@ -1,7 +1,3 @@
-/**
- * Created by igordeychik on 5/17/2021.
- */
-
 public with sharing class AccountHelper {
     private List<Account>accounts=new List<Account>();
     private List<String>names=new List<String>();

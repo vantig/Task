@@ -1,5 +1,5 @@
 @IsTest
-private  class TestOpportunityTriggerHandler {
+private class TestOpportunityTriggerHandler {
     @TestSetup
     static void setup() {
         TestDataFactory.createOpportunitiesTestRecords(1);
