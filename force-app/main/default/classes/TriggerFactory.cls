@@ -8,8 +8,6 @@ public with sharing class TriggerFactory {
       );
     }
     if (JunctionOpportunityWebOrderHelper.flag) {
-      System.debug('trigger factory '+soType);
-      System.debug(Trigger.operationType+'\n');
       execute(handler);
 
     }

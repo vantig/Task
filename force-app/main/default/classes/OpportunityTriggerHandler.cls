@@ -41,7 +41,6 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
         JunctionOpportunityWebOrderHelper.flag = false;
 
 
-       // System.debug(Trigger.newMap.values()+'onAfterInsert');
 
         List<Opportunity>opportunities = Trigger.new;
 
@@ -58,14 +57,8 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
 
         insert orders;
         insert JunctionOpportunityWebOrderHelper.createNewJunctions();
-        System.debug(' opportunities');
-        for (Opportunity opp:opportunities){
-            System.debug(opp.External_Id__c+'External_Id__c');
-            System.debug(opp.Id+'Id');
-        }
 
-        System.debug(orders+' orders');
-        System.debug(JunctionOpportunityWebOrderHelper.createNewJunctions()+' junctions');
+
         JunctionOpportunityWebOrderHelper.newOpportunities.clear();
         JunctionOpportunityWebOrderHelper.newWebOrders.clear();
         JunctionOpportunityWebOrderHelper.flag = true;

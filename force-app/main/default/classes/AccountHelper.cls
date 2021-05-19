@@ -9,7 +9,7 @@ public with sharing class AccountHelper {
     public AccountHelper(List<String>names){
         this.names=names;
         accounts = [SELECT  Name FROM Account WHERE Name IN :names];
-        System.debug([SELECT  Name FROM Account]);
+
     }
     public void reQueryByNames(){
         Boolean isNameExist;

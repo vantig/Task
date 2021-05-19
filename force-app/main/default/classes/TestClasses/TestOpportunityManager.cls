@@ -36,11 +36,10 @@ private class TestOpportunityManager {
                 '      } ]' +
                 '}');
         RestContext.request = request;
-
+        RestContext.response = new RestResponse();
         OpportunityManager.upsertOpportunity();
 
         System.assertEquals(2, [SELECT Id FROM Opportunity WHERE External_Id__c != NULL].size());
-        System.debug([SELECT Id FROM Opportunity].size() + 'size finish');
     }
     @IsTest
     static void testPutCalloutUpdate() {
@@ -84,6 +83,7 @@ private class TestOpportunityManager {
                 '   ]' +
                 '}');
         RestContext.request = request;
+        RestContext.response = new RestResponse();
         OpportunityManager.upsertOpportunity();
         List<Opportunity>ops = [SELECT Amount,Account.Name FROM Opportunity WHERE External_Id__c != NULL];
         System.assertEquals(2, ops.size());
@@ -127,6 +127,7 @@ private class TestOpportunityManager {
                 '   ]' +
                 '}');
         RestContext.request = request;
+        RestContext.response = new RestResponse();
         OpportunityManager.upsertOpportunity();
         ops = [SELECT Amount,Account.Name FROM Opportunity WHERE External_Id__c != NULL];
         System.assertEquals(2, ops.size());
@@ -146,6 +147,7 @@ private class TestOpportunityManager {
         request.httpMethod = 'DELETE';
         request.addHeader('Content-Type', 'application/json');
         RestContext.request = request;
+        RestContext.response = new RestResponse();
         OpportunityManager.deleteOpportunity();
         System.assertEquals(0, [SELECT Id FROM Opportunity].size());
     }
@@ -161,7 +163,7 @@ private class TestOpportunityManager {
         request.httpMethod = 'GET';
         request.addHeader('Content-Type', 'application/json');
         RestContext.request = request;
-
+        RestContext.response = new RestResponse();
         System.assertEquals(2, OpportunityManager.getOpportunities().size());
     }
 }

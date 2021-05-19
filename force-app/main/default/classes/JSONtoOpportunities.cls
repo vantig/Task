@@ -16,7 +16,6 @@ public class JSONtoOpportunities {
                     if (text == 'opportunities') {
                         opportunities = arrayOfOpportunities(parser);
                     } else {
-                        System.debug(LoggingLevel.WARN, 'JSONtoOpportunities consuming unrecognized property: ' + text);
                         consumeObject(parser);
                     }
                 }
@@ -52,7 +51,6 @@ public class JSONtoOpportunities {
                         opp.External_Id__c = parser.getText();
                         sid=opp.External_Id__c;
                     } else {
-                        System.debug(LoggingLevel.WARN, 'Opportunities consuming unrecognized property: ' + text);
                         consumeObject(parser);
                     }
                 }
