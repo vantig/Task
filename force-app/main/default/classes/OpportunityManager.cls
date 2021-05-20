@@ -59,7 +59,7 @@ global with sharing class OpportunityManager {
         RestResponse res = RestContext.response;
         String jsonResponse = '';
         try {
-            jsonResponse = JSON.serialize(Database.delete(opp)) ;
+            jsonResponse = JSON.serialize(Database.delete(opp) );
             res.addHeader('Content-Type', 'application/json;charset=UTF-8');
             res.responseBody = Blob.valueOf(jsonResponse);
             res.statusCode = 200;

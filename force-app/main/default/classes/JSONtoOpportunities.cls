@@ -33,7 +33,7 @@ public class JSONtoOpportunities {
                 String text = parser.getText();
                 if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
                     if (text == 'accountName') {
-                        accountName=parser.getText();
+                        accountName = parser.getText();
                     } else if (text == 'opportunityName') {
                         opp.Name = parser.getText();
                     } else if (text == 'stage') {
@@ -49,15 +49,15 @@ public class JSONtoOpportunities {
                         opp.Type = parser.getText();
                     } else if (text == '_sid') {
                         opp.External_Id__c = parser.getText();
-                        sid=opp.External_Id__c;
+                        sid = opp.External_Id__c;
                     } else {
                         consumeObject(parser);
                     }
                 }
             }
         }
-        if (accountName!=null&&accountName.length()>0) {
-            JSONtoOpportunitiesHelper.namesOfRelatedAccounts.put(sid,accountName);
+        if (accountName != null && accountName.length() > 0) {
+            JSONtoOpportunitiesHelper.namesOfRelatedAccounts.put(sid, accountName);
         }
         return opp;
     }
@@ -85,7 +85,7 @@ public class JSONtoOpportunities {
 
     private static List<Opportunity> arrayOfOpportunities(System.JSONParser p) {
         List<Opportunity> res = new List<Opportunity>();
-        if (p.getCurrentToken() == null){
+        if (p.getCurrentToken() == null) {
             p.nextToken();
         }
         while (p.nextToken() != System.JSONToken.END_ARRAY) {

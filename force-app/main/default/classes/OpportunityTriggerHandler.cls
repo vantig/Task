@@ -22,7 +22,7 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
             );
         }
 
-            update webOrders;
+        update webOrders;
 
 
         JunctionOpportunityWebOrderHelper.flag = true;
@@ -41,16 +41,15 @@ public with sharing class OpportunityTriggerHandler implements ITrigger {
         JunctionOpportunityWebOrderHelper.flag = false;
 
 
-
         List<Opportunity>opportunities = Trigger.new;
 
         List<Web_Order__c> orders = new List<Web_Order__c>();
 
         for (Integer i = 0; i < opportunities.size(); i++) {
-            orders.add(WebOrderHelper.createWebOrder( opportunities[i]));
+            orders.add(WebOrderHelper.createWebOrder(opportunities[i]));
 
             JunctionOpportunityWebOrderHelper.newOpportunities.add(
-                   opportunities[i]
+                    opportunities[i]
             );
             JunctionOpportunityWebOrderHelper.newWebOrders.add(orders[i]);
         }
