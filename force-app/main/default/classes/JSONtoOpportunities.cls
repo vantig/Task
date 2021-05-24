@@ -59,6 +59,7 @@ public class JSONtoOpportunities {
         if (accountName != null && accountName.length() > 0) {
             JSONtoOpportunitiesHelper.namesOfRelatedAccounts.put(sid, accountName);
         }
+
         return opp;
     }
 
@@ -67,7 +68,6 @@ public class JSONtoOpportunities {
         System.JSONParser parser = System.JSON.createParser(json);
         return new JSONtoOpportunities(parser);
     }
-
     public static void consumeObject(System.JSONParser parser) {
         Integer depth = 0;
         do {

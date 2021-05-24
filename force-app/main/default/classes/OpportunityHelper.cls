@@ -24,9 +24,8 @@ public with sharing class OpportunityHelper {
 
         return op;
     }
-    public static List<Opportunity> getRelatedOpportunities(
-            List<JunctionOpportunityWebOrder__c> junctions
-    ) {
+    public static List<Opportunity> getRelatedOpportunities(List<JunctionOpportunityWebOrder__c> junctions) {
+
         List<Id> IdOpportunities = new List<Id>();
 
         for (JunctionOpportunityWebOrder__c jun : junctions) {
